@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun initListeners( tipIntent: Intent, reviewIntent: Intent) {
         binding.btPlaceSearch.setOnClickListener{
-            searchPlaceById()
+            searchPlaceById(tipIntent,reviewIntent)
             btTips.visibility = View.VISIBLE
             btReviews.visibility = View.VISIBLE
             tvDescription.visibility = View.VISIBLE
@@ -65,9 +65,10 @@ class MainActivity : AppCompatActivity() {
         startActivity(reviewIntent)
     }
 
-    private fun searchPlaceById() {
+    private fun searchPlaceById(tipIntent: Intent, reviewIntent: Intent) {
         val name = binding.etCharacter.text.toString()
         val place = ApiClient.placeBuilder()?.getById(name)
+        var locatableId = 0
 
         place?.enqueue(object : Callback<Place> {
             override fun onResponse(call: Call<Place>, response: Response<Place>) {
@@ -76,6 +77,10 @@ class MainActivity : AppCompatActivity() {
 
                     binding.tvName.text = response.body()?.name
                     binding.tvDescription.text = response.body()?.locatable?.description
+
+                    locatableId = response.body()?.locatable?.id!!
+                    reviewIntent.putExtra(ReviewActivity.locatableId , locatableId.toString())
+                    tipIntent.putExtra(TipActivity.locatableId , locatableId.toString())
 
 
                     val placeResponse = response?.body()
