@@ -3,6 +3,7 @@ package com.goingto.data.remote
 import com.goingto.data.interfaces.CityInterface
 import com.goingto.data.interfaces.CountryInterface
 import com.goingto.data.interfaces.PlaceInterface
+import com.goingto.data.interfaces.ReviewInterface
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -13,6 +14,7 @@ object ApiClient {
     private var countryInterface: CountryInterface? = null
     private var cityInterface: CityInterface? = null
     private var placeInterface: PlaceInterface? = null
+    private var reviewInterface: ReviewInterface? = null
 
     private val builder = Retrofit.Builder()
         .baseUrl(API_BASE_URL)
@@ -38,6 +40,11 @@ object ApiClient {
         placeInterface = builder.create(PlaceInterface::class.java)
         return placeInterface as PlaceInterface
 
+    }
+
+    fun reviewBuilder(): ReviewInterface?{
+        reviewInterface = builder.create(ReviewInterface::class.java)
+        return reviewInterface as ReviewInterface
     }
 
 }
