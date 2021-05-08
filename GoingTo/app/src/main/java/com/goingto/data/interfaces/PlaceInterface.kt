@@ -10,4 +10,7 @@ interface PlaceInterface {
 
     @GET("places/{id}")
     fun getById(@Path("id") id: String): Call<Place>
+
+    @GET("places/")
+    fun getAll(): Call<List<Place>>
 }

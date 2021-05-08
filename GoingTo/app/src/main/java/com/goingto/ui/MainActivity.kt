@@ -44,10 +44,13 @@ class MainActivity : AppCompatActivity() {
     private fun initListeners( tipIntent: Intent, reviewIntent: Intent) {
         binding.btPlaceSearch.setOnClickListener{
             searchPlaceById(tipIntent,reviewIntent)
+            //Muestra vistas
             btTips.visibility = View.VISIBLE
             btReviews.visibility = View.VISIBLE
             tvDescription.visibility = View.VISIBLE
             tvName.visibility = View.VISIBLE
+            //Log para ver si muestra todos
+            searchAllPlaces()
         }
         binding.btReviews.setOnClickListener {
             openReviewActivity(reviewIntent)
@@ -55,6 +58,24 @@ class MainActivity : AppCompatActivity() {
         binding.btTips.setOnClickListener {
             openTipActivity(tipIntent)
         }
+    }
+
+    private fun searchAllPlaces() {
+        val places = ApiClient.placeBuilder()?.getAll()
+
+        places?.enqueue(object : Callback<List<Place>> {
+            override fun onResponse(call: Call<List<Place>>, response: Response<List<Place>>) {
+                if (response.isSuccessful){
+
+                    val placeResponse = response?.body()
+                    Log.d("Response", Gson().toJson(placeResponse))
+                }
+            }
+
+            override fun onFailure(call: Call<List<Place>>, t: Throwable) {
+                t?.printStackTrace()
+            }
+        })
     }
 
     private fun openTipActivity(tipIntent: Intent) {
