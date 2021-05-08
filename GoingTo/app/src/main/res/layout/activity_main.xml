@@ -73,14 +73,14 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnTips"
+            android:id="@+id/btTips"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="300dp"
             android:text="Tips" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnReviews"
+            android:id="@+id/btReviews"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"

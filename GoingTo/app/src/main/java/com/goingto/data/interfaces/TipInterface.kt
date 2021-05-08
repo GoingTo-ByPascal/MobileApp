@@ -8,5 +8,5 @@ import retrofit2.http.Path
 interface TipInterface {
 
     @GET("locatables/{locatableId}/tips")
-    fun getById(@Path("locatableId") id: String): Call<Tip>
+    fun getById(@Path("locatableId") id: String): Call<List<Tip>>
 }

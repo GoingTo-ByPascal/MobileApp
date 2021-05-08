@@ -1,53 +1,72 @@
 package com.goingto.ui
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.TextView
+import android.view.View
+import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
-import com.goingto.R
 import com.goingto.data.entities.Place
 import com.goingto.data.remote.ApiClient
+import com.goingto.databinding.ActivityMainBinding
 import com.google.gson.Gson
+import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var etCharacter: EditText
-    private lateinit var btPlaceSearch: Button
-    private lateinit var tvName: TextView
-    private lateinit var tvDescription: TextView
-    private lateinit var ivImage: ImageView
+
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        btTips.visibility
+
+        var tipIntent = Intent(this,TipActivity::class.java)
+        var reviewIntent = Intent(this,ReviewActivity::class.java)
 
         initViews()
-        initListeners()
+        initListeners(tipIntent , reviewIntent)
     }
 
     private fun initViews() {
-        etCharacter = findViewById(R.id.etCharacter)
-        btPlaceSearch = findViewById(R.id.btPlaceSearch)
-        tvName = findViewById(R.id.tvName)
-        tvDescription = findViewById(R.id.tvDescription)
-        ivImage = findViewById(R.id.ivImage)
+        btTips.visibility = View.INVISIBLE
+        btReviews.visibility = View.INVISIBLE
+        tvDescription.visibility = View.INVISIBLE
+        tvName.visibility = View.INVISIBLE
     }
 
-    private fun initListeners() {
-        btPlaceSearch.setOnClickListener{
+    private fun initListeners( tipIntent: Intent, reviewIntent: Intent) {
+        binding.btPlaceSearch.setOnClickListener{
             searchPlaceById()
+            btTips.visibility = View.VISIBLE
+            btReviews.visibility = View.VISIBLE
+            tvDescription.visibility = View.VISIBLE
+            tvName.visibility = View.VISIBLE
+        }
+        binding.btReviews.setOnClickListener {
+            openReviewActivity(reviewIntent)
+        }
+        binding.btTips.setOnClickListener {
+            openTipActivity(tipIntent)
         }
     }
 
+    private fun openTipActivity(tipIntent: Intent) {
+        startActivity(tipIntent)
+    }
+
+    private fun openReviewActivity(reviewIntent: Intent) {
+        startActivity(reviewIntent)
+    }
+
     private fun searchPlaceById() {
-        val name = etCharacter.text.toString()
+        val name = binding.etCharacter.text.toString()
         val place = ApiClient.placeBuilder()?.getById(name)
 
         place?.enqueue(object : Callback<Place> {
@@ -55,13 +74,13 @@ class MainActivity : AppCompatActivity() {
                 if (response.isSuccessful){
 
 
-                    tvName.text = response.body()?.name
-                    tvDescription.text = response.body()?.locatable?.description
+                    binding.tvName.text = response.body()?.name
+                    binding.tvDescription.text = response.body()?.locatable?.description
 
 
                     val placeResponse = response?.body()
                     Log.d("Response", Gson().toJson(placeResponse))
-                    Glide.with(this@MainActivity).load(response.body()?.image).into(ivImage)
+                    Glide.with(this@MainActivity).load(response.body()?.image).into(binding.ivImage)
                 }
             }
 
