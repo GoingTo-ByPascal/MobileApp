@@ -8,5 +8,5 @@ import retrofit2.http.Path
 interface ReviewInterface {
 
     @GET("locatables/{locatableId}/reviews")
-    fun getById(@Path("locatableId") id: String): Call<List<Review>>
+    fun getById(@Path("locatableId") id: Int): Call<MutableList<Review>>
 }
