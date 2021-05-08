@@ -49,8 +49,8 @@ class TipActivity : AppCompatActivity() {
 
                     tips = response.body()!!
                     tipAdapter.setItems(tips)
-                    val placeResponse = response?.body()
-                    Log.d("Response", Gson().toJson(placeResponse))
+                    val tipResponse = response?.body()
+                    Log.d("Response", Gson().toJson(tipResponse))
                 }
             }
 
