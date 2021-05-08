@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">GoingTo</string>
+    <string name="hint_character">Place Name</string>
 </resources>
